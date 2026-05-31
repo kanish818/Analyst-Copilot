@@ -68,6 +68,46 @@ def _table_style() -> TableStyle:
     )
 
 
+def _sanitize_text(value: str) -> str:
+    allowed = []
+    for ch in value:
+        code = ord(ch)
+        if ch in "\n\r\t" or 32 <= code <= 126:
+            allowed.append(ch)
+    return "".join(allowed).strip()
+
+
+def _company_data_rows(report: ReportData) -> list[list[str]]:
+    current_price = report.current_price or "N/A"
+    target_price = report.target_price or "N/A"
+    table_quality = report.table_quality if isinstance(report.table_quality, dict) else {}
+    coverage = str(table_quality.get("completeness", "N/A"))
+    return [
+        ["Market Cap (Rs.cr)", "N/A", "52 Week High - Low (Rs.)", "N/A"],
+        ["Current Price (Rs.)", current_price, "Target Price (Rs.)", target_price],
+        ["Table Coverage", coverage, "Recommendation", report.recommendation or "Neutral"],
+    ]
+
+
+def _shareholding_rows() -> list[list[str]]:
+    return [
+        ["Promoters", "N/A", "N/A", "N/A"],
+        ["FII's", "N/A", "N/A", "N/A"],
+        ["MFs/Institutions", "N/A", "N/A", "N/A"],
+        ["Public", "N/A", "N/A", "N/A"],
+        ["Others", "N/A", "N/A", "N/A"],
+        ["Total", "100.0", "100.0", "100.0"],
+    ]
+
+
+def _price_performance_rows() -> list[list[str]]:
+    return [
+        ["Absolute Return", "N/A", "N/A", "N/A"],
+        ["Benchmark Return", "N/A", "N/A", "N/A"],
+        ["Relative Return", "N/A", "N/A", "N/A"],
+    ]
+
+
 def render_report_pdf(report: ReportData, chart_path: Path | None = None) -> bytes:
     styles = _styles()
     buffer = io.BytesIO()
@@ -85,33 +125,46 @@ def render_report_pdf(report: ReportData, chart_path: Path | None = None) -> byt
     story = []
 
     story.append(Paragraph(f"{report.company_name} - Analyst Copilot Report", styles["title"]))
-    meta = f"Date: {report.report_date} | Sector: {report.sector or 'N/A'} | Recommendation: {report.recommendation}"
+    meta = f"Sector: {report.sector or 'N/A'} | Date: {report.report_date} | Recommendation: {report.recommendation or 'Neutral'}"
     story.append(Paragraph(meta, styles["small"]))
     story.append(Spacer(1, 5))
 
     if report.headline:
-        story.append(Paragraph(report.headline, styles["body"]))
-        story.append(Spacer(1, 6))
-
-    if report.current_price or report.target_price:
-        story.append(Paragraph("<b>Price Snapshot</b>", styles["section"]))
-        price_table = Table(
-            [
-                ["Current Price", "Target Price"],
-                [report.current_price or "N/A", report.target_price or "N/A"],
-            ],
-            colWidths=[75 * mm, 75 * mm],
-        )
-        price_table.setStyle(_table_style())
-        story.append(price_table)
+        story.append(Paragraph(_sanitize_text(report.headline), styles["body"]))
         story.append(Spacer(1, 6))
 
     story.append(Paragraph("Investment Highlights", styles["section"]))
     if report.highlights:
         for bullet in report.highlights[:6]:
-            story.append(Paragraph(f"- {bullet}", styles["body"]))
+            clean_bullet = _sanitize_text(bullet)
+            if clean_bullet:
+                story.append(Paragraph(f"- {clean_bullet}", styles["body"]))
     else:
         story.append(Paragraph("- No structured highlights extracted.", styles["body"]))
+    story.append(Spacer(1, 6))
+
+    story.append(Paragraph("Company Data", styles["section"]))
+    company_header = ["Field", "Value", "Field", "Value"]
+    company_rows = [company_header] + _company_data_rows(report)
+    company_table = Table(company_rows, colWidths=[45 * mm, 30 * mm, 45 * mm, 30 * mm])
+    company_table.setStyle(_table_style())
+    story.append(company_table)
+    story.append(Spacer(1, 6))
+
+    story.append(Paragraph("Shareholding (%)", styles["section"]))
+    share_header = ["Category", "Q-2", "Q-1", "Q0"]
+    share_rows = [share_header] + _shareholding_rows()
+    share_table = Table(share_rows, colWidths=[55 * mm, 25 * mm, 25 * mm, 25 * mm])
+    share_table.setStyle(_table_style())
+    story.append(share_table)
+    story.append(Spacer(1, 6))
+
+    story.append(Paragraph("Price Performance", styles["section"]))
+    perf_header = ["", "3 Month", "6 Month", "1 Year"]
+    perf_rows = [perf_header] + _price_performance_rows()
+    perf_table = Table(perf_rows, colWidths=[55 * mm, 25 * mm, 25 * mm, 25 * mm])
+    perf_table.setStyle(_table_style())
+    story.append(perf_table)
     story.append(Spacer(1, 6))
 
     story.append(Paragraph("Financial Table", styles["section"]))
@@ -133,7 +186,7 @@ def render_report_pdf(report: ReportData, chart_path: Path | None = None) -> byt
         chart = Image(str(chart_path), width=165 * mm, height=65 * mm)
         story.append(chart)
         basis = report.chart_basis or "Chart basis unavailable."
-        story.append(Paragraph(f"Chart Basis: {basis}", styles["small"]))
+        story.append(Paragraph(f"Chart Basis: {_sanitize_text(basis)}", styles["small"]))
     else:
         story.append(Paragraph("Chart unavailable in this run.", styles["small"]))
     story.append(Spacer(1, 6))
