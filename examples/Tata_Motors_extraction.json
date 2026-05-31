@@ -1,0 +1,57 @@
+{
+  "sector": "",
+  "headline": "Tata Motors: Auto-generated analyst draft",
+  "recommendation": "Neutral",
+  "current_price": "",
+  "target_price": "",
+  "highlights": [
+    "new growth opportunities, and deliver sustained value while continuing",
+    "Enhancing corporate value through sustainable growth",
+    "in order to return profits to shareholders and investors.",
+    "highest ever revenues and PBT (BEI) despite a challenging environment.",
+    "FY25 was another eventful year wherein overall CV industry volumes were marginally lower than FY24."
+  ],
+  "financial_table": [],
+  "key_metrics": [
+    {
+      "name": "Revenue",
+      "value": "29",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "revenues of  £29",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    },
+    {
+      "name": "EBITDA",
+      "value": "57,6",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "ebitda of i57,6",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    },
+    {
+      "name": "PAT",
+      "value": "148",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "patents and 148",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    }
+  ],
+  "outlook": "Outlook generated from available source snippets only.",
+  "risks": "Missing structured financial fields in source or extraction response.",
+  "valuation": "Insufficient valuation inputs from parsed content.",
+  "citations": [
+    {
+      "field": "highlights",
+      "source_page": "",
+      "source_excerpt": "new growth opportunities, and deliver sustained value while continuing"
+    }
+  ]
+}

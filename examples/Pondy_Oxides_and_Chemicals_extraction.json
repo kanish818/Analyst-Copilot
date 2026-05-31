@@ -1,0 +1,57 @@
+{
+  "sector": "",
+  "headline": "Pondy Oxides and Chemicals: Auto-generated analyst draft",
+  "recommendation": "Neutral",
+  "current_price": "",
+  "target_price": "",
+  "highlights": [
+    "[PAGE 3] This presentation and the accompanying slides (the “Presentation”), which have been prepared by Pondy Oxides and Chemicals Limited(the “Company”) solely for the informatio",
+    "POCL has achieved its highest-ever quarterly and half-yearly revenue, EBITDA, PAT,and margins, underpinned by strong operational execution. We continue to makesteady progress towar",
+    "[PAGE 7] Responsible Growth, Sustainable ProgressVisionTo be the most valuable recycling company in the world adopting responsible and sustainable manufacturing practicesCore Value",
+    "Increase in Production and Sales of Lead and Copper on half yearly basisSuccessfully commissioned commercial production under Phase 1of the Lead capacity expansion project, contrib",
+    "Half-Yearly5,7246,345Q2FY25 Q2FY26174356Q2FY25 Q2FY26Revenue (Rs. Mn) EBITDA (Rs. Mn) & Margin (%) PAT (Rs. Mn) & PAT Margin (%)3.0%"
+  ],
+  "financial_table": [],
+  "key_metrics": [
+    {
+      "name": "Revenue",
+      "value": "20",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "revenue cagr above 20",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    },
+    {
+      "name": "EBITDA",
+      "value": "20",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "ebitda margins above 8%, roce over 20",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    },
+    {
+      "name": "PAT",
+      "value": "22",
+      "unit": "",
+      "trend": "",
+      "confidence": 0.45,
+      "source_excerpt": "pat grew by 22",
+      "source_page": "",
+      "assumption": "Heuristic extraction due to unavailable LLM response."
+    }
+  ],
+  "outlook": "Outlook generated from available source snippets only.",
+  "risks": "Missing structured financial fields in source or extraction response.",
+  "valuation": "Insufficient valuation inputs from parsed content.",
+  "citations": [
+    {
+      "field": "highlights",
+      "source_page": "",
+      "source_excerpt": "[PAGE 3] This presentation and the accompanying slides (the “Presentation”), which have been prepared by Pondy Oxides and Chemicals Limited(the “Company”) solely for the informatio"
+    }
+  ]
+}
