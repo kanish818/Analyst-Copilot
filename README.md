@@ -90,7 +90,7 @@ Extra external annual report for stronger demo:
 ## Acceptance Criteria Mapping
 
 - Geojit-like report layout and section flow: implemented in `pdf_report.py`
-- Financial tables + narrative + chart: generated in report pipeline
+- Financial tables + narrative + chart: generated in report pipeline with hybrid parser + LLM extraction
 - Multiple input formats: PDF/CSV/TXT supported
 - Missing fields handled gracefully: defaults and placeholders in mapper/PDF renderer
 - One-click download: Streamlit `download_button`

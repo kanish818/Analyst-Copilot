@@ -54,6 +54,16 @@ if generate:
         q1.metric("Metrics extracted", len(report.key_metrics))
         q2.metric("Low-confidence metrics", len(quality_flags))
         q3.metric("Missing narrative blocks", missing_core)
+        quality = report.table_quality if isinstance(report.table_quality, dict) else {}
+        st.caption(
+            " | ".join(
+                [
+                    f"Table coverage: {quality.get('completeness', 0)}",
+                    f"Merged rows: {quality.get('merged_rows', 0)}",
+                    f"Chart basis: {report.chart_basis or 'Will be shown in PDF chart section'}",
+                ]
+            )
+        )
 
         st.subheader("Headline")
         st.write(report.headline)

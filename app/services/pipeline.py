@@ -26,8 +26,9 @@ class AnalystCopilotPipeline:
         return map_payload_to_report(company_name, payload)
 
     def build_pdf(self, report: ReportData) -> bytes:
-        chart_path = build_revenue_chart(report, self.chart_dir)
-        return render_report_pdf(report, chart_path)
+        chart_result = build_revenue_chart(report, self.chart_dir)
+        report.chart_basis = chart_result.chart_basis
+        return render_report_pdf(report, chart_result.chart_path)
 
     def run(self, company_name: str, uploaded_files: list[Any]) -> tuple[ReportData, bytes]:
         ingest_result = self.ingest(uploaded_files)

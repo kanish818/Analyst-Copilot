@@ -30,6 +30,9 @@ def map_payload_to_report(company_name: str, payload: dict[str, Any]) -> ReportD
                 ebitda=clean_text(row.get("ebitda")),
                 pat=clean_text(row.get("pat")),
                 ebitda_margin=clean_text(row.get("ebitda_margin")),
+                source=clean_text(row.get("source")),
+                source_page=clean_text(row.get("source_page")),
+                row_completeness=_row_completeness(row),
             )
         )
 
@@ -73,5 +76,16 @@ def map_payload_to_report(company_name: str, payload: dict[str, Any]) -> ReportD
         risks=clean_text(payload.get("risks")),
         valuation=clean_text(payload.get("valuation")),
         citations=citations,
+        table_quality=payload.get("table_quality", {}) if isinstance(payload.get("table_quality"), dict) else {},
+        chart_basis=clean_text(payload.get("chart_basis")),
         raw_extraction=payload,
     )
+
+
+def _row_completeness(row: dict[str, Any]) -> float:
+    total = 4
+    filled = 0
+    for field in ("revenue", "ebitda", "pat", "ebitda_margin"):
+        if clean_text(row.get(field)):
+            filled += 1
+    return round(filled / total, 2)

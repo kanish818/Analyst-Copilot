@@ -128,11 +128,23 @@ def render_report_pdf(report: ReportData, chart_path: Path | None = None) -> byt
     story.append(fin_table)
     story.append(Spacer(1, 6))
 
+    story.append(Paragraph("Chart", styles["section"]))
     if chart_path and chart_path.exists():
-        story.append(Paragraph("Revenue Trend Chart", styles["section"]))
         chart = Image(str(chart_path), width=165 * mm, height=65 * mm)
         story.append(chart)
-        story.append(Spacer(1, 6))
+        basis = report.chart_basis or "Chart basis unavailable."
+        story.append(Paragraph(f"Chart Basis: {basis}", styles["small"]))
+    else:
+        story.append(Paragraph("Chart unavailable in this run.", styles["small"]))
+    story.append(Spacer(1, 6))
+
+    story.append(Paragraph("Outlook & Valuation", styles["section"]))
+    story.append(Paragraph(f"<b>Outlook:</b> {report.outlook or 'Outlook not available from source content.'}", styles["body"]))
+    story.append(Spacer(1, 2))
+    story.append(Paragraph(f"<b>Valuation:</b> {report.valuation or 'Valuation commentary not available from source content.'}", styles["body"]))
+    story.append(Spacer(1, 2))
+    story.append(Paragraph(f"<b>Risks:</b> {report.risks or 'Risk disclosure not available from source content.'}", styles["body"]))
+    story.append(Spacer(1, 6))
 
     story.append(Paragraph("Key Metrics with Confidence", styles["section"]))
     metric_header = ["Metric", "Value", "Trend", "Confidence", "Source (Page)", "Assumption"]
@@ -157,17 +169,14 @@ def render_report_pdf(report: ReportData, chart_path: Path | None = None) -> byt
     story.append(metric_table)
     story.append(Spacer(1, 6))
 
-    story.append(Paragraph("Outlook", styles["section"]))
-    story.append(Paragraph(report.outlook or "Outlook not available from source content.", styles["body"]))
-    story.append(Spacer(1, 4))
-
-    story.append(Paragraph("Risks", styles["section"]))
-    story.append(Paragraph(report.risks or "Risk disclosure not available from source content.", styles["body"]))
-    story.append(Spacer(1, 4))
-
-    story.append(Paragraph("Valuation View", styles["section"]))
-    story.append(Paragraph(report.valuation or "Valuation commentary not available from source content.", styles["body"]))
-    story.append(Spacer(1, 6))
+    if report.table_quality:
+        quality_summary = (
+            f"Table Coverage: {report.table_quality.get('completeness', 0)} | "
+            f"Rows(Merged/Parser/LLM): {report.table_quality.get('merged_rows', 0)}/"
+            f"{report.table_quality.get('parser_rows', 0)}/{report.table_quality.get('llm_rows', 0)}"
+        )
+        story.append(Paragraph(quality_summary, styles["small"]))
+        story.append(Spacer(1, 6))
 
     story.append(Paragraph("Citations", styles["section"]))
     citations_header = ["Field", "Page", "Source Excerpt"]

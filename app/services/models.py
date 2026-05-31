@@ -23,6 +23,9 @@ class FinancialRow:
     ebitda: str = ""
     pat: str = ""
     ebitda_margin: str = ""
+    source: str = ""
+    source_page: str = ""
+    row_completeness: float = 0.0
 
 
 @dataclass
@@ -41,4 +44,6 @@ class ReportData:
     risks: str = ""
     valuation: str = ""
     citations: list[dict[str, Any]] = field(default_factory=list)
+    table_quality: dict[str, Any] = field(default_factory=dict)
+    chart_basis: str = ""
     raw_extraction: dict[str, Any] = field(default_factory=dict)
